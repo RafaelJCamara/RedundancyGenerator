@@ -25,6 +25,8 @@ def readfile():
     network = str(parser.get("config","network"))
     print("Network: " + network )
 
+    base1 = str(parser.get("config","base1"))
+
 def OutputFile():
     user_output_file = input("Qual o nome do ficheiro de output: ")
     f = open(user_output_file, "w")
@@ -52,17 +54,64 @@ def OutputFile():
     # Quero algo assim "s1 = net.addSwitch('s1', cls=OVSKernelSwitch, failMode='standalone')"
 
     base_1 = int(input("Quantos switchs base 1: "))
+    #base_1 = readfile.base1
 
     for switch_numero in range(0,base_1):
-        f.write("    s"+str(switch_numero)+" = net.addSwitch('s"+str(switch_numero)+"', cls=OVSKernelSwitch, failMode='standalone')\n")
+        f.write("    s"+str(switch_numero+1)+" = net.addSwitch('s"+str(switch_numero+1)+"', cls=OVSKernelSwitch, failMode='standalone')\n")
+
+    #Pensamento para estas duas variaveis, conforme o número de switchs adicionados na base 1
+    #vamos ter o mesmo número de switchs na base 2
+    base_2_start = base_1
+    base_2_end = base_1 * 2
+
+    for switch_numero in range(base_2_start,base_2_end):
+        f.write("    s"+str(switch_numero+1)+" = net.addSwitch('s"+str(switch_numero+1)+"', cls=OVSKernelSwitch, failMode='standalone')\n")
 
     f.write("\n")
     f.write("    info( '*** Add hosts\\n')\n")
     for host_numero in range(0,base_1):
-        f.write("    h"+str(host_numero)+" = net.addHost('h"+str(host_numero)+"', cls=Host)\n")
+        f.write("    h"+str(host_numero+1)+" = net.addHost('h"+str(host_numero+1)+"', cls=Host)\n")
 
     f.write("\n")
+    f.write("    info( '*** Add links\\n')\n")
+    #Link dos hosts
+    for host_numero in range(0,base_1):
+        #Quero algo assim "net.addLink(h1, s1)"
+        f.write("    net.addLink(h"+str(host_numero+1)+", s"+str(host_numero+1)+")\n")
     
+
+    z=int("0")
+    for x_base1 in range(0,base_1):
+        for y_base2 in range(0,base_2_end):
+            if x_base1 != y_base2:
+                f.write("    net.addLink(s"+str(x_base1+1)+", s"+str(y_base2+1)+")\n")
+
+
+    f.write("\n")
+    f.write("    info( '*** Starting network\\n')\n")
+    f.write("    net.build()\n")
+
+    f.write("    info( '*** Starting controllers\\n')\n")
+    f.write("    for controller in net.controllers:\n")
+    f.write("        controller.start()\n")
+    f.write("\n")
+    f.write("    info( '*** Starting switches\\n')\n")
+    for host_numero in range(0,base_2_end):
+        f.write("    net.get('s"+str(host_numero+1)+"').start([])\n")
+    
+    f.write("\n")
+    f.write("\n")
+    f.write("    CLI(net)\n")
+    f.write("    net.stop()\n")
+    f.write("\n")
+    f.write("if __name__ == '__main__':\n")
+    f.write("    setLogLevel( 'info' )\n")
+    f.write("    myNetwork()\n")
+    f.write("\n")
+
+
+    f.close()
+    print("Gravado com sucesso em "+user_output_file)
 
 
 def menu():

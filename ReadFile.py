@@ -1,21 +1,21 @@
 import configparser
 
 parser = configparser.ConfigParser()
-parser.read("demofile.txt")
+parser.read("config_file.txt")
 
-print("Spine switches:")
-print(parser.get("config","spine_switches"))
+#Guardar na variavel o valor que vem do ficheiro
+#Dar print desse valor
 spine_switches = parser.get("config","spine_switches")
+print("Spine switches:" + spine_switches)
 
-print("leaf switches:")
-print(parser.get("config","leaf_switches"))
+
 leaf_switches = parser.get("config","leaf_switches")
+print("Leaf switches:" + leaf_switches)
 
 
-print("redundancy:")
-print(parser.get("config","redundancy"))
 redundancy = parser.get("config","redundancy")
+print("Redundancy:" + redundancy)
 
-print("Network:")
-print(parser.get("config","network"))
+
 network = str(parser.get("config","network"))
+print("Network:" + network )

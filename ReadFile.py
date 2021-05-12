@@ -80,10 +80,10 @@ def OutputFile():
         f.write("    net.addLink(h"+str(host_numero+1)+", s"+str(host_numero+1)+")\n")
     
 
-    z=int("0")
+
     for x_base1 in range(0,base_1):
         for y_base2 in range(0,base_2_end):
-            if x_base1 != y_base2:
+            if x_base1 > y_base2:
                 f.write("    net.addLink(s"+str(x_base1+1)+", s"+str(y_base2+1)+")\n")
 
 

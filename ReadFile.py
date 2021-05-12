@@ -19,28 +19,3 @@ redundancy = parser.get("config","redundancy")
 print("Network:")
 print(parser.get("config","network"))
 network = str(parser.get("config","network"))
-
-
-
-#f = open("demofile.txt", "r")
-#print(f.read(5))
-
-
-# Append
-#f = open("demofile2.txt", "a")
-#f.write("Now the file has more content!")
-#f.close()
-
-#open and read the file after the appending:
-#f = open("demofile2.txt", "r")
-#print(f.read())
-
-
-# Overwrite
-#f = open("demofile3.txt", "w")
-#f.write("Woops! I have deleted the content!")
-#f.close()
-
-#open and read the file after the appending:
-#f = open("demofile3.txt", "r")
-#print(f.read())

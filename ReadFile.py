@@ -29,6 +29,7 @@ def readfile():
 
 def OutputFile():
     user_output_file = input("Qual o nome do ficheiro de output: ")
+    ip_base = input("Ip Base ? Por exemplo: 10.0.0.0/8")
     f = open(user_output_file, "w")
 
     f.write("#!/usr/bin/env python\n")
@@ -47,7 +48,7 @@ def OutputFile():
     f.write("\n")
     f.write("    net = Mininet( topo=None,\n")
     f.write("                   build=False,\n")
-    f.write("                   ipBase='10.0.0.0/8')\n")
+    f.write("                   ipBase='"+ip_base+"')\n")
     f.write("\n")
     f.write("    info( '*** Adding controller\\n' )\n")
     f.write("    info( '*** Add switches\\n')\n")
@@ -113,6 +114,24 @@ def OutputFile():
     f.close()
     print("Gravado com sucesso em "+user_output_file)
 
+def CreateFile():
+    config_output_file = input("Qual o nome do ficheiro de output: ")
+    spine_switches= input("Numero de spine switchs ? ")
+    leaf_switchs = input("Numero de leaf switchs ? ")
+    redundancy = input("Nivel de redundancia ? ")
+    network = input("Game de endereços ? Por exemplo, 192.168.0.0/16 ")
+
+    f = open(config_output_file, "w")
+    f.write("[config]\n")
+    f.write("spine_switches="+spine_switches+"\n")
+    f.write("leaf_switchs="+leaf_switchs+"\n")
+    f.write("redundancy="+redundancy+"\n")
+    f.write("network="+network+"\n")
+    f.close()
+    print("Gravado com sucesso em "+config_output_file)
+
+
+
 
 def menu():
 
@@ -123,7 +142,8 @@ def menu():
     while loop: 
         print(30 * "-", "SDN Gerador de redudancia", 30 * "-")
         print("1. Ler o ficheiro de configurações ")
-        print("2. Criar o ficheiro de output ")         
+        print("2. Criar o ficheiro de output ")
+        print("3. Criar o ficheiro de configurações ")          
         print("9. Sair deste programa ")
         print(73 * "-")
         input_user = input("Escolher a opção a realizar: ")
@@ -133,7 +153,7 @@ def menu():
         elif input_user == '2':
             OutputFile()
         elif input_user == '3':
-            loop = False
+            CreatFile()
         elif input_user == '4':
             loop = False
         elif input_user == '9':
@@ -142,8 +162,6 @@ def menu():
         else:
             # Para valores colocados fora do pretendido print de mensagem de aviso
             input("Numero colocado não corresponde a nenhuma opção, tentar novamente..")
-
-
 
 menu()
 

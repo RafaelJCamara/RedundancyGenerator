@@ -1,6 +1,5 @@
 [config]
 spine_switches=4
-leaf_switches=6
+leaf_switches=5
 redundancy=4
 network=192.168.0.0/16
-base1=2 

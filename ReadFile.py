@@ -8,25 +8,21 @@ def readfile():
     file = input("Qual o nome do ficheiro de configurações: ")
     parser.read(file)
 
-
     #Guardar na variavel o valor que vem do ficheiro
     #Dar print desse valor
     spine_switches = parser.get("config","spine_switches")
     print("Spine switches: " + spine_switches)
 
-
     leaf_switches = parser.get("config","leaf_switches")
     print("Leaf switches: " + leaf_switches)
-
 
     redundancy = parser.get("config","redundancy")
     print("Redundancy: " + redundancy)
 
-
     network = str(parser.get("config","network"))
     print("Network: " + network )
 
-    base1 = str(parser.get("config","base1"))
+    #base1 = str(parser.get("config","base1"))
 
 def OutputFile():
     parser = configparser.ConfigParser()
@@ -87,10 +83,17 @@ def OutputFile():
     
 
 
-    for x_base1 in range(0,base_1):
-        for y_base2 in range(0,base_2_end):
-            if x_base1 > y_base2:
-                f.write("    net.addLink(s"+str(x_base1+1)+", s"+str(y_base2+1)+")\n")
+    # TEM AQUI UM BUG VER OUTPUT FILE, FICA A FALTAR SWITCHS
+    #for x_base1 in range(0,base_1):
+        #for y_base2 in range(0,base_2_end):
+            #if x_base1 > y_base2:
+                #f.write("    net.addLink(s"+str(x_base1+1)+", s"+str(y_base2+1)+")\n")
+
+    #Bug fix ? Testar a ver se já printa todas os switchs, parece que sim
+    for x in range(0,base_2_end):
+        for y in range(0,base_1):
+            if x > y:
+                f.write("    net.addLink(s"+str(x+1)+", s"+str(y+1)+")\n")
 
 
     f.write("\n")

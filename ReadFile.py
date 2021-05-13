@@ -5,7 +5,8 @@
 import configparser
 def readfile():
     parser = configparser.ConfigParser()
-    parser.read("config_file.txt")
+    file = input("Qual o nome do ficheiro de configurações: ")
+    parser.read(file)
 
 
     #Guardar na variavel o valor que vem do ficheiro
@@ -28,8 +29,14 @@ def readfile():
     base1 = str(parser.get("config","base1"))
 
 def OutputFile():
+    parser = configparser.ConfigParser()
+    configfile = input("Qual o nome do ficheiro de configurações: ")
+    parser.read(configfile)
+    base_1 = int(parser.get("config","leaf_switches"))
+    base_2 = int(parser.get("config","spine_switches"))
+    ip_base = str(parser.get("config","network"))
+
     user_output_file = input("Qual o nome do ficheiro de output: ")
-    ip_base = input("Ip Base ? Por exemplo: 10.0.0.0/8")
     f = open(user_output_file, "w")
 
     f.write("#!/usr/bin/env python\n")
@@ -54,8 +61,6 @@ def OutputFile():
     f.write("    info( '*** Add switches\\n')\n")
     # Quero algo assim "s1 = net.addSwitch('s1', cls=OVSKernelSwitch, failMode='standalone')"
 
-    base_1 = int(input("Quantos switchs base 1: "))
-    #base_1 = readfile.base1
 
     for switch_numero in range(0,base_1):
         f.write("    s"+str(switch_numero+1)+" = net.addSwitch('s"+str(switch_numero+1)+"', cls=OVSKernelSwitch, failMode='standalone')\n")
@@ -63,7 +68,7 @@ def OutputFile():
     #Pensamento para estas duas variaveis, conforme o número de switchs adicionados na base 1
     #vamos ter o mesmo número de switchs na base 2
     base_2_start = base_1
-    base_2_end = base_1 * 2
+    base_2_end = base_1 + base_2
 
     for switch_numero in range(base_2_start,base_2_end):
         f.write("    s"+str(switch_numero+1)+" = net.addSwitch('s"+str(switch_numero+1)+"', cls=OVSKernelSwitch, failMode='standalone')\n")
@@ -153,7 +158,7 @@ def menu():
         elif input_user == '2':
             OutputFile()
         elif input_user == '3':
-            CreatFile()
+            CreateFile()
         elif input_user == '4':
             loop = False
         elif input_user == '9':

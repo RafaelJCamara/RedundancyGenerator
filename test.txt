@@ -1,0 +1,5 @@
+[config]
+spine_switches=2
+leaf_switchs=3
+redundancy=1
+network=192.168.0.0/16

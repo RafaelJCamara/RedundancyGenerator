@@ -1,6 +1,6 @@
 # Apenas sei fazer um Hello World em Python, um BOM Hello World 
 # mas vamos ver o que sai daqui
-# Good luck boooooooy =D
+# Good luck boohoo =D
 
 import configparser
 def readfile():
@@ -59,15 +59,17 @@ def OutputFile():
 
 
     for switch_numero in range(0,base_1):
-        f.write("    s"+str(switch_numero+1)+" = net.addSwitch('s"+str(switch_numero+1)+"', cls=OVSKernelSwitch, failMode='standalone')\n")
+        # f.write("    s"+str(switch_numero+1)+" = net.addSwitch('s"+str(switch_numero+1)+"', cls=OVSKernelSwitch, failMode='standalone')\n")
+        f.write("    l"+str(switch_numero+1)+" = net.addSwitch('l"+str(switch_numero+1)+"', cls=OVSKernelSwitch, failMode='standalone')\n")
 
     #Pensamento para estas duas variaveis, conforme o número de switchs adicionados na base 1
     #vamos ter o mesmo número de switchs na base 2
-    base_2_start = base_1
-    base_2_end = base_1 + base_2
+    # base_2_start = base_1
+    # base_2_end = base_1 + base_2
 
-    for switch_numero in range(base_2_start,base_2_end):
-        f.write("    s"+str(switch_numero+1)+" = net.addSwitch('s"+str(switch_numero+1)+"', cls=OVSKernelSwitch, failMode='standalone')\n")
+    for switch_numero in range(0,base_2):
+        # f.write("    s"+str(switch_numero+1)+" = net.addSwitch('s"+str(switch_numero+1)+"', cls=OVSKernelSwitch, failMode='standalone')\n")
+        f.write("    c"+str(switch_numero+1)+" = net.addSwitch('c"+str(switch_numero+1)+"', cls=OVSKernelSwitch, failMode='standalone')\n")
 
     f.write("\n")
     f.write("    info( '*** Add hosts\\n')\n")
@@ -79,7 +81,7 @@ def OutputFile():
     #Link dos hosts
     for host_numero in range(0,base_1):
         #Quero algo assim "net.addLink(h1, s1)"
-        f.write("    net.addLink(h"+str(host_numero+1)+", s"+str(host_numero+1)+")\n")
+        f.write("    net.addLink(h"+str(host_numero+1)+", l"+str(host_numero+1)+")\n")
     
 
 
@@ -90,11 +92,13 @@ def OutputFile():
                 #f.write("    net.addLink(s"+str(x_base1+1)+", s"+str(y_base2+1)+")\n")
 
     #Bug fix ? Testar a ver se já printa todas os switchs, parece que sim
-    for x in range(0,base_2_end):
-        for y in range(0,base_1):
-            if x > y:
-                f.write("    net.addLink(s"+str(x+1)+", s"+str(y+1)+")\n")
-
+    # for x in range(0,base_2_end):
+    #     for y in range(0,base_1):
+    #         if x > y:
+    #             f.write("    net.addLink(s"+str(x+1)+", s"+str(y+1)+")\n")
+    for x in range(base_1):
+        for y in range(base_2):
+            f.write("    net.addLink(l" + str(x + 1) + ", c" + str(y + 1) + ")\n")
 
     f.write("\n")
     f.write("    info( '*** Starting network\\n')\n")
@@ -105,8 +109,10 @@ def OutputFile():
     f.write("        controller.start()\n")
     f.write("\n")
     f.write("    info( '*** Starting switches\\n')\n")
-    for host_numero in range(0,base_2_end):
-        f.write("    net.get('s"+str(host_numero+1)+"').start([])\n")
+    for host_numero in range(base_1):
+        f.write("    net.get('l"+str(host_numero+1)+"').start([])\n")
+    for host_numero in range(base_2):
+        f.write("    net.get('c"+str(host_numero+1)+"').start([])\n")
     
     f.write("\n")
     f.write("\n")
@@ -117,7 +123,6 @@ def OutputFile():
     f.write("    setLogLevel( 'info' )\n")
     f.write("    myNetwork()\n")
     f.write("\n")
-
 
     f.close()
     print("Gravado com sucesso em "+user_output_file)
@@ -137,9 +142,6 @@ def CreateFile():
     f.write("network="+network+"\n")
     f.close()
     print("Gravado com sucesso em "+config_output_file)
-
-
-
 
 def menu():
 
@@ -172,4 +174,3 @@ def menu():
             input("Numero colocado não corresponde a nenhuma opção, tentar novamente..")
 
 menu()
-

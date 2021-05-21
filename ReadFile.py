@@ -56,9 +56,9 @@ def OutputFile():
     f.write("\n")
     f.write("    info( '*** Adding controller\\n' )\n")
     f.write("    c0 = net.addController(name='c0',\n")
-    f.write("                   controller=Controller,\n")
-    f.write("                   protocol='tcp',\n")
-    f.write("                   port=6633)\n")
+    f.write("                           controller=Controller,\n")
+    f.write("                           protocol='tcp',\n")
+    f.write("                           port=6633)\n")
     f.write("    info( '*** Add switches\\n')\n")
     # Quero algo assim "s1 = net.addSwitch('s1', cls=OVSKernelSwitch, failMode='standalone')"
 

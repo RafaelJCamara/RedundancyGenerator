@@ -92,7 +92,6 @@ def myNetwork():
     net.get('c3').start([c0])
     net.get('c4').start([c0])
 
-
     CLI(net)
     net.stop()
 

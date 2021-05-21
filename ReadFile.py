@@ -55,6 +55,10 @@ def OutputFile():
     f.write("                   ipBase='"+ip_base+"')\n")
     f.write("\n")
     f.write("    info( '*** Adding controller\\n' )\n")
+    f.write("    c0 = net.addController(name='c0',\n")
+    f.write("                   controller=Controller,\n")
+    f.write("                   protocol='tcp',\n")
+    f.write("                   port=6633)\n")
     f.write("    info( '*** Add switches\\n')\n")
     # Quero algo assim "s1 = net.addSwitch('s1', cls=OVSKernelSwitch, failMode='standalone')"
 
@@ -111,9 +115,9 @@ def OutputFile():
     f.write("\n")
     f.write("    info( '*** Starting switches\\n')\n")
     for host_numero in range(base_1):
-        f.write("    net.get('l"+str(host_numero+1)+"').start([])\n")
+        f.write("    net.get('l"+str(host_numero+1)+"').start([c0])\n")
     for host_numero in range(base_2):
-        f.write("    net.get('c"+str(host_numero+1)+"').start([])\n")
+        f.write("    net.get('c"+str(host_numero+1)+"').start([c0])\n")
     
     f.write("\n")
     f.write("\n")

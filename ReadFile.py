@@ -4,6 +4,9 @@
 
 import configparser
 
+user_output_file = ""
+network=""
+
 def readfile():
     parser = configparser.ConfigParser()
     file = input("Qual o nome do ficheiro de configurações: ")
@@ -20,10 +23,44 @@ def readfile():
     redundancy = parser.get("config","redundancy")
     print("Redundancy: " + redundancy)
 
+    global network
     network = str(parser.get("config","network"))
     print("Network: " + network )
 
     #base1 = str(parser.get("config","base1"))
+
+
+def generateMininetEditScript():
+    f = open(user_output_file+".mn", "w")
+    f.write("{")
+    f.write('   "application": {')
+    f.write('       "dpctl": "",')
+    f.write(f'      "ipBase": "{network}",')
+    f.write('       "netflow": {')
+    f.write('           "nflowAddId": "0",')
+    f.write('           "nflowTarget": "",')
+    f.write('           "nflowTimeout": "600"')
+    f.write('       },')
+    f.write('       "openFlowVersions": {')
+    f.write('           "ovsOf10": "1",')
+    f.write('           "ovsOf11": "0",')
+    f.write('           "ovsOf12": "0"')
+    f.write('           "ovsOf13": "0"')
+    f.write('       },')
+    f.write('       "sflow": {')
+    f.write('           "sflowHeader": "128",')
+    f.write('           "sflowPolling": "30",')
+    f.write('           "sflowSampling": "400",')
+    f.write('           "sflowTarget": ""')
+    f.write('       },')
+    f.write('       "startCLI": "0",')
+    f.write('       "switchType": "ovs",')
+    f.write('       "terminalType": "xterm"')
+    f.write('   },')
+    f.write("}")
+    f.write("\n")
+    f.close()
+    print("Mininet topology saved with success in "+user_output_file+".mn")
 
 def OutputFile():
     parser = configparser.ConfigParser()
@@ -33,8 +70,9 @@ def OutputFile():
     base_2 = int(parser.get("config","spine_switches"))
     ip_base = str(parser.get("config","network"))
 
+    global user_output_file
     user_output_file = input("Qual o nome do ficheiro de output: ")
-    f = open(user_output_file, "w")
+    f = open(user_output_file+".py", "w")
 
     f.write("#!/usr/bin/env python\n")
     f.write("\n")

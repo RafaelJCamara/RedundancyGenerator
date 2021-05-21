@@ -17,6 +17,11 @@ def myNetwork():
                    ipBase='192.168.0.0/16')
 
     info( '*** Adding controller\n' )
+    c0 = net.addController(name='c0',
+                           controller=Controller,
+                           protocol='tcp',
+                           port=6633)
+
     info( '*** Add switches\n')
     l1 = net.addSwitch('l1', cls=OVSKernelSwitch, failMode='standalone')
     l2 = net.addSwitch('l2', cls=OVSKernelSwitch, failMode='standalone')
@@ -76,16 +81,16 @@ def myNetwork():
         controller.start()
 
     info( '*** Starting switches\n')
-    net.get('l1').start([])
-    net.get('l2').start([])
-    net.get('l3').start([])
-    net.get('l4').start([])
-    net.get('l5').start([])
-    net.get('l6').start([])
-    net.get('c1').start([])
-    net.get('c2').start([])
-    net.get('c3').start([])
-    net.get('c4').start([])
+    net.get('l1').start([c0])
+    net.get('l2').start([c0])
+    net.get('l3').start([c0])
+    net.get('l4').start([c0])
+    net.get('l5').start([c0])
+    net.get('l6').start([c0])
+    net.get('c1').start([c0])
+    net.get('c2').start([c0])
+    net.get('c3').start([c0])
+    net.get('c4').start([c0])
 
 
     CLI(net)

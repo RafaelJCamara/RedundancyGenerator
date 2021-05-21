@@ -3,6 +3,7 @@
 # Good luck boohoo =D
 
 import configparser
+
 def readfile():
     parser = configparser.ConfigParser()
     file = input("Qual o nome do ficheiro de configurações: ")

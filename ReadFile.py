@@ -6,6 +6,9 @@ import configparser
 
 user_output_file = ""
 network=""
+numberOfLeafSwitches = ""
+numberOfSpineSwitches = ""
+redundancyLevel = ""
 
 def readfile():
     parser = configparser.ConfigParser()
@@ -15,12 +18,18 @@ def readfile():
     #Guardar na variavel o valor que vem do ficheiro
     #Dar print desse valor
     spine_switches = parser.get("config","spine_switches")
+    global numberOfSpineSwitches
+    numberOfSpineSwitches = int(spine_switches)
     print("Spine switches: " + spine_switches)
 
     leaf_switches = parser.get("config","leaf_switches")
+    global numberOfLeafSwitches
+    numberOfLeafSwitches = int(leaf_switches)
     print("Leaf switches: " + leaf_switches)
 
     redundancy = parser.get("config","redundancy")
+    global redundancyLevel
+    redundancyLevel = int(redundancy)
     print("Redundancy: " + redundancy)
 
     global network
@@ -70,9 +79,35 @@ def generateMininetEditScript():
     f.write('           "y": "70.0"')
     f.write('       }')
     f.write('   ],')
-    f.write('   "hosts": [')
+    f.write('   "links": [')
+    for i in range(numberOfLeafSwitches):
+        if i<numberOfLeafSwitches-1:
+            for a in range(redundancyLevel):
+                f.write('       {')
+                f.write(f'           "dest": "c{a+1}",')
+                f.write('           "opts": {},')
+                f.write(f'           "src": "s{i+1}"')
+                f.write('       },')
+        else:
+            for a in range(redundancyLevel):
+                if a<redundancyLevel-1:
+                    f.write('       {')
+                    f.write(f'           "dest": "c{a + 1}",')
+                    f.write('           "opts": {},')
+                    f.write(f'           "src": "s{i + 1}"')
+                    f.write('       },')
+                else:
+                    f.write('       {')
+                    f.write(f'           "dest": "c{a + 1}",')
+                    f.write('           "opts": {},')
+                    f.write(f'           "src": "s{i + 1}"')
+                    f.write('       }')
 
     f.write('   ],')
+    f.write('   "switches": [')
+
+    f.write('   ],')
+    f.write('   "version": "2"')
     f.write("}")
     f.write("\n")
     f.close()

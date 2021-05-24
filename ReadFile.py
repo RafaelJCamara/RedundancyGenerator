@@ -102,9 +102,33 @@ def generateMininetEditScript():
                     f.write('           "opts": {},')
                     f.write(f'           "src": "s{i + 1}"')
                     f.write('       }')
-
     f.write('   ],')
     f.write('   "switches": [')
+    for i in range(numberOfSpineSwitches):
+        f.write('       {')
+        f.write(f'          "number": "{i+1}",')
+        f.write('           "opts": {')
+        f.write('           },')
+        f.write(f'           "x": "{50+35*i}",')
+        f.write(f'           "y": "150"')
+        f.write('       },')
+    for a in range(numberOfLeafSwitches):
+        if a<numberOfLeafSwitches-1:
+            f.write('       {')
+            f.write(f'          "number": "{i + 1}",')
+            f.write('           "opts": {')
+            f.write('           },')
+            f.write(f'           "x": "{50+a*30}",')
+            f.write('           "y": "200"')
+            f.write('       },')
+        else:
+            f.write('       {')
+            f.write(f'          "number": "{i + 1}",')
+            f.write('           "opts": {')
+            f.write('           },')
+            f.write(f'           "x": "{50+a*30}",')
+            f.write('           "y": "200"')
+            f.write('       }')
 
     f.write('   ],')
     f.write('   "version": "2"')

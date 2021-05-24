@@ -5,10 +5,6 @@
 import configparser
 
 user_output_file = ""
-network=""
-numberOfLeafSwitches = 0
-numberOfSpineSwitches = 0
-redundancyLevel = 0
 
 def readfile():
     parser = configparser.ConfigParser()
@@ -18,28 +14,21 @@ def readfile():
     #Guardar na variavel o valor que vem do ficheiro
     #Dar print desse valor
     spine_switches = parser.get("config","spine_switches")
-    global numberOfSpineSwitches
-    numberOfSpineSwitches = int(spine_switches)
     print("Spine switches: " + spine_switches)
 
     leaf_switches = parser.get("config","leaf_switches")
-    global numberOfLeafSwitches
-    numberOfLeafSwitches = int(leaf_switches)
     print("Leaf switches: " + leaf_switches)
 
     redundancy = parser.get("config","redundancy")
-    global redundancyLevel
-    redundancyLevel = int(redundancy)
     print("Redundancy: " + redundancy)
 
-    global network
     network = str(parser.get("config","network"))
     print("Network: " + network )
 
     #base1 = str(parser.get("config","base1"))
 
 
-def generateMininetEditScript():
+def generateMininetEditScript(network, numberOfSpineSwitches, numberOfLeafSwitches, redundancyLevel):
     f = open(user_output_file+".mn", "w")
     f.write("{\n")
     f.write('   "application": {\n')
@@ -53,7 +42,7 @@ def generateMininetEditScript():
     f.write('       "openFlowVersions": {\n')
     f.write('           "ovsOf10": "1",\n')
     f.write('           "ovsOf11": "0",\n')
-    f.write('           "ovsOf12": "0"\n')
+    f.write('           "ovsOf12": "0",\n')
     f.write('           "ovsOf13": "0"\n')
     f.write('       },\n')
     f.write('       "sflow": {\n')
@@ -79,9 +68,10 @@ def generateMininetEditScript():
     f.write('           "y": "70.0"\n')
     f.write('       }\n')
     f.write('   ],\n')
+    f.write('   "hosts": [\n')
+    f.write('   ],\n')
     f.write('   "links": [\n')
-    global numberOfLeafSwitches
-    global numberOfSpineSwitches
+
     for i in range(numberOfLeafSwitches):
         if i<numberOfLeafSwitches-1:
             for a in range(redundancyLevel):
@@ -117,7 +107,7 @@ def generateMininetEditScript():
         f.write(f'               "nodeNum": {i+1},\n')
         f.write('               "switchType": "default"\n')
         f.write('           },\n')
-        f.write(f'           "x": "{50+35*i}",\n')
+        f.write(f'           "x": "{50+100*i}",\n')
         f.write(f'           "y": "150"\n')
         f.write('       },\n')
     for a in range(numberOfLeafSwitches):
@@ -131,8 +121,8 @@ def generateMininetEditScript():
         f.write(f'               "nodeNum": {numberOfSpineSwitches+a+1},\n')
         f.write('               "switchType": "default"\n')
         f.write('           },\n')
-        f.write(f'           "x": "{50+a*30}",\n')
-        f.write('           "y": "200"\n')
+        f.write(f'           "x": "{50+a*150}",\n')
+        f.write('           "y": "300"\n')
         if a < numberOfLeafSwitches - 1:
             f.write('       },\n')
         else:
@@ -152,6 +142,7 @@ def OutputFile():
     base_1 = int(parser.get("config","leaf_switches"))
     base_2 = int(parser.get("config","spine_switches"))
     ip_base = str(parser.get("config","network"))
+    redundancy = int(parser.get("config","redundancy"))
 
     global user_output_file
     user_output_file = input("Qual o nome do ficheiro de output: ")
@@ -252,6 +243,8 @@ def OutputFile():
 
     f.close()
     print("Gravado com sucesso em "+user_output_file)
+    generateMininetEditScript(ip_base,base_2,base_1,redundancy)
+
 
 def CreateFile():
     config_output_file = input("Qual o nome do ficheiro de output: ")
@@ -288,7 +281,6 @@ def menu():
             readfile()
         elif input_user == '2':
             OutputFile()
-            generateMininetEditScript()
         elif input_user == '3':
             CreateFile()
         elif input_user == '4':

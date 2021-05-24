@@ -121,7 +121,7 @@ def generateMininetEditScript(network, numberOfSpineSwitches, numberOfLeafSwitch
         f.write(f'               "nodeNum": {numberOfSpineSwitches+a+1},\n')
         f.write('               "switchType": "default"\n')
         f.write('           },\n')
-        f.write(f'           "x": "{50+a*150}",\n')
+        f.write(f'           "x": "{50+a*130}",\n')
         f.write('           "y": "300"\n')
         if a < numberOfLeafSwitches - 1:
             f.write('       },\n')

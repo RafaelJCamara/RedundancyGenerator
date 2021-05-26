@@ -69,6 +69,20 @@ def generateMininetEditScript(network, numberOfSpineSwitches, numberOfLeafSwitch
     f.write('       }\n')
     f.write('   ],\n')
     f.write('   "hosts": [\n')
+    for i in range(numberOfLeafSwitches):
+        f.write('       {\n')
+        f.write(f'           "number": "{i+1}",\n')
+        f.write('           "opts": {\n')
+        f.write(f'               "hostname": "h{i+1}",\n')
+        f.write(f'               "nodeNum": {i+1},\n')
+        f.write('               "sched": "host"\n')
+        f.write('           },\n')
+        f.write(f'           "x": "{50+100*i}",\n')
+        f.write('           "y": "400"\n')
+        if i<numberOfLeafSwitches-1:
+            f.write('       },\n')
+        else:
+            f.write('       }\n')
     f.write('   ],\n')
     f.write('   "links": [\n')
 
@@ -244,7 +258,6 @@ def OutputFile():
     f.close()
     print("Gravado com sucesso em "+user_output_file)
     generateMininetEditScript(ip_base,base_2,base_1,redundancy)
-
 
 def CreateFile():
     config_output_file = input("Qual o nome do ficheiro de output: ")

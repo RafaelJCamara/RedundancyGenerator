@@ -87,27 +87,23 @@ def generateMininetEditScript(network, numberOfSpineSwitches, numberOfLeafSwitch
     f.write('   "links": [\n')
 
     for i in range(numberOfLeafSwitches):
-        if i<numberOfLeafSwitches-1:
-            for a in range(redundancyLevel):
-                f.write('       {\n')
-                f.write(f'           "dest": "c{a+1}",\n')
-                f.write('           "opts": {},\n')
-                f.write(f'           "src": "l{i+1}"\n')
-                f.write('       },\n')
+        for a in range(redundancyLevel):
+            f.write('       {\n')
+            f.write(f'           "dest": "c{a+1}",\n')
+            f.write('           "opts": {},\n')
+            f.write(f'           "src": "l{i+1}"\n')
+            f.write('       },\n')
+
+    for i in range(numberOfLeafSwitches):
+        f.write('       {\n')
+        f.write(f'          "dest": "l{i + 1}",\n')
+        f.write('           "opts": {},\n')
+        f.write(f'          "src": "h{i + 1}"\n')
+        if i < numberOfLeafSwitches -1:
+            f.write('       },\n')
         else:
-            for a in range(redundancyLevel):
-                if a<redundancyLevel-1:
-                    f.write('       {\n')
-                    f.write(f'          "dest": "c{a + 1}",\n')
-                    f.write('           "opts": {},\n')
-                    f.write(f'          "src": "l{i + 1}"\n')
-                    f.write('       },\n')
-                else:
-                    f.write('       {\n')
-                    f.write(f'          "dest": "c{a + 1}",\n')
-                    f.write('           "opts": {},\n')
-                    f.write(f'          "src": "l{i + 1}"\n')
-                    f.write('       }\n')
+            f.write('       }\n')
+
     f.write('   ],\n')
     f.write('   "switches": [\n')
     for i in range(numberOfSpineSwitches):

@@ -1,7 +1,3 @@
-# Apenas sei fazer um Hello World em Python, um BOM Hello World 
-# mas vamos ver o que sai daqui
-# Good luck boohoo =D
-
 import configparser
 
 user_output_file = ""
@@ -11,8 +7,6 @@ def readfile():
     file = input("Qual o nome do ficheiro de configurações: ")
     parser.read(file)
 
-    #Guardar na variavel o valor que vem do ficheiro
-    #Dar print desse valor
     spine_switches = parser.get("config","spine_switches")
     print("Spine switches: " + spine_switches)
 
@@ -24,8 +18,6 @@ def readfile():
 
     network = str(parser.get("config","network"))
     print("Network: " + network )
-
-    #base1 = str(parser.get("config","base1"))
 
 
 def generateMininetEditScript(network, numberOfSpineSwitches, numberOfLeafSwitches, redundancyLevel):
@@ -84,8 +76,9 @@ def generateMininetEditScript(network, numberOfSpineSwitches, numberOfLeafSwitch
         else:
             f.write('       }\n')
     f.write('   ],\n')
-    f.write('   "links": [\n')
 
+
+    f.write('   "links": [\n')
     for i in range(numberOfLeafSwitches):
         for a in range(redundancyLevel):
             f.write('       {\n')
@@ -105,6 +98,8 @@ def generateMininetEditScript(network, numberOfSpineSwitches, numberOfLeafSwitch
             f.write('       }\n')
 
     f.write('   ],\n')
+
+
     f.write('   "switches": [\n')
     for i in range(numberOfSpineSwitches):
         f.write('       {\n')
@@ -137,7 +132,6 @@ def generateMininetEditScript(network, numberOfSpineSwitches, numberOfLeafSwitch
             f.write('       },\n')
         else:
             f.write('       }\n')
-
     f.write('   ],\n')
     f.write('   "version": "2"\n')
     f.write("}\n")
@@ -160,20 +154,11 @@ def OutputFile():
 
     f.write("#!/usr/bin/env python\n")
     f.write("\n")
-    # f.write("from mininet.net import Mininet\n")
-    # f.write("from mininet.node import Controller, RemoteController, OVSController\n")
-    # f.write("from mininet.node import CPULimitedHost, Host, Node\n")
-    # f.write("from mininet.node import OVSKernelSwitch, UserSwitch, OVSSwitch\n")
-    # f.write("from mininet.node import IVSSwitch\n")
-    # f.write("from mininet.cli import CLI\n")
-    # f.write("from mininet.log import setLogLevel, info\n")
-    # f.write("from mininet.link import TCLink, Intf\n")
-    # f.write("from subprocess import call\n")
     f.write("from mininet.topo import Topo\n")
     f.write("from mininet.link import TCLink\n")
-
     f.write("class MyTopo( Topo ):\n")
     f.write("   def build(self):\n")
+
     for i in range(base_1):
         f.write(f"      h{i+1} = self.addHost('h{i+1}', ip='10.0.0.{i+1}')\n")
     for i in range(base_1):
@@ -191,91 +176,6 @@ def OutputFile():
 
 
     f.write("topos = { 'mytopo': ( lambda : MyTopo() ) }\n")
-
-    # f.write("\n")
-    # f.write("def myNetwork():\n")
-    # f.write("\n")
-    # f.write("    net = Mininet( topo=None,\n")
-    # f.write("                   build=False,\n")
-    # f.write("                   ipBase='"+ip_base+"')\n")
-    # f.write("\n")
-    # f.write("    info( '*** Adding controller\\n' )\n")
-    # f.write("    c0 = net.addController(name='c0',\n")
-    # f.write("                           controller=Controller,\n")
-    # # f.write("                           protocol='tcp',\n")
-    # f.write("                           port=6633,\n")
-    # f.write("                           protocols=\"OpenFlow13\")\n")
-    # f.write("    info( '*** Add switches\\n')\n")
-    # # Quero algo assim "s1 = net.addSwitch('s1', cls=OVSKernelSwitch, failMode='standalone')"
-    #
-    #
-    # for switch_numero in range(0,base_1):
-    #     # f.write("    s"+str(switch_numero+1)+" = net.addSwitch('s"+str(switch_numero+1)+"', cls=OVSKernelSwitch, failMode='standalone')\n")
-    #     f.write("    l"+str(switch_numero+1)+" = net.addSwitch('l"+str(switch_numero+1)+"', cls=OVSSwitch, failMode='standalone')\n")
-    #
-    # #Pensamento para estas duas variaveis, conforme o número de switchs adicionados na base 1
-    # #vamos ter o mesmo número de switchs na base 2
-    # # base_2_start = base_1
-    # # base_2_end = base_1 + base_2
-    #
-    # for switch_numero in range(0,base_2):
-    #     # f.write("    s"+str(switch_numero+1)+" = net.addSwitch('s"+str(switch_numero+1)+"', cls=OVSKernelSwitch, failMode='standalone')\n")
-    #     f.write("    c"+str(switch_numero+1)+" = net.addSwitch('c"+str(switch_numero+1)+"', cls=OVSSwitch, failMode='standalone')\n")
-    #
-    # f.write("\n")
-    # f.write("    info( '*** Add hosts\\n')\n")
-    # for host_numero in range(0,base_1):
-    #     # f.write(f"    h"+str(host_numero+1)+" = net.addHost('h"+str(host_numero+1)+"', ip= ,cls=Host)\n")
-    #     f.write(f"    h{str(host_numero+1)} = net.addHost('h{str(host_numero+1)}', ip='10.0.0.{host_numero+1}', cls=Host)\n")
-    #
-    # f.write("\n")
-    # f.write("    info( '*** Add links\\n')\n")
-    # #Link dos hosts
-    # for host_numero in range(0,base_1):
-    #     #Quero algo assim "net.addLink(h1, s1)"
-    #     f.write("    net.addLink(h"+str(host_numero+1)+", l"+str(host_numero+1)+")\n")
-    #
-    #
-    #
-    # # TEM AQUI UM BUG VER OUTPUT FILE, FICA A FALTAR SWITCHS
-    # #for x_base1 in range(0,base_1):
-    #     #for y_base2 in range(0,base_2_end):
-    #         #if x_base1 > y_base2:
-    #             #f.write("    net.addLink(s"+str(x_base1+1)+", s"+str(y_base2+1)+")\n")
-    #
-    # #Bug fix ? Testar a ver se já printa todas os switchs, parece que sim
-    # # for x in range(0,base_2_end):
-    # #     for y in range(0,base_1):
-    # #         if x > y:
-    # #             f.write("    net.addLink(s"+str(x+1)+", s"+str(y+1)+")\n")
-    # for x in range(base_1):
-    #     for y in range(base_2):
-    #         f.write("    net.addLink(l" + str(x + 1) + ", c" + str(y + 1) + ")\n")
-    #
-    # f.write("\n")
-    # f.write("    info( '*** Starting network\\n')\n")
-    # f.write("    net.build()\n")
-    #
-    # f.write("    info( '*** Starting controllers\\n')\n")
-    # f.write("    for controller in net.controllers:\n")
-    # f.write("        controller.start()\n")
-    # f.write("\n")
-    # f.write("    info( '*** Starting switches\\n')\n")
-    # for host_numero in range(base_1):
-    #     f.write("    net.get('l"+str(host_numero+1)+"').start([c0])\n")
-    # for host_numero in range(base_2):
-    #     f.write("    net.get('c"+str(host_numero+1)+"').start([c0])\n")
-    #
-    # f.write("\n")
-    # f.write("\n")
-    # f.write("    CLI(net)\n")
-    # f.write("    net.stop()\n")
-    # f.write("\n")
-    # f.write("if __name__ == '__main__':\n")
-    # f.write("    setLogLevel( 'info' )\n")
-    # f.write("    myNetwork()\n")
-    # f.write("\n")
-
     f.close()
     print("Gravado com sucesso em "+user_output_file)
     generateMininetEditScript(ip_base,base_2,base_1,redundancy)
@@ -301,7 +201,6 @@ def menu():
     loop = True
     input_user = -1
 
-    #Enquanto o valor de loop for True mostrar o menu
     while loop: 
         print(30 * "-", "SDN Gerador de redudancia", 30 * "-")
         print("1. Ler o ficheiro de configurações ")
@@ -321,9 +220,8 @@ def menu():
             loop = False
         elif input_user == '9':
             print("Sair..")
-            loop = False  # Termina o loop do menu
+            loop = False
         else:
-            # Para valores colocados fora do pretendido print de mensagem de aviso
             input("Numero colocado não corresponde a nenhuma opção, tentar novamente..")
 
 menu()
